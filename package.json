@@ -1,0 +1,26 @@
+{
+  "name": "requestpfx",
+  "version": "1.0.0",
+  "description": "request over http or https with certificate extraction for windows",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://***REMOVED***/requestpfx.git"
+  },
+  "keywords": [
+    "request",
+    "http",
+    "https",
+    "pfx",
+    "certificate"
+  ],
+  "author": "***REMOVED***",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3"
+  }
+}
