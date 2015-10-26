@@ -1,6 +1,6 @@
 {
   "name": "requestpfx",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "request over http or https with certificate extraction for windows",
   "main": "index.js",
   "scripts": {

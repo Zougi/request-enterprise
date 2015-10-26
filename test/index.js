@@ -6,8 +6,8 @@ var should = require('chai').should(),
 
 describe('#check simple get request works', function() {
 
-  it('returns body from an external website', function(done) {
-    request("http://google.com", function (error, url, body) {
+  it('returns body from internal website', function(done) {
+    request("***REMOVED***", function (error, url, body) {
      if (!error) {
        body.should.exist
      }
@@ -15,12 +15,13 @@ describe('#check simple get request works', function() {
     })
   })
 
-  it('returns body from internal website', function(done) {
-    request("***REMOVED***", function (error, url, body) {
-     if (!error) {
-       body.should.exist
-     }
-     done()
+  it('returns body from an external website', function(done) {
+    request = requestpfx.init(null, process.env.HTTP_PROXY).download
+    request("http://google.com", function (error, url, body) {
+      if (!error) {
+        body.should.exist
+      }
+      done()
     })
   })
 

@@ -46,8 +46,8 @@ request.download = function (uri, postData, cb) {
       rejectUnauthorized : false
     }
 
-    if (process.env.HTTP_PROXY) {
-      var parsedProxy = url.parse(process.env.HTTP_PROXY)
+    if (request.proxy) {
+      var parsedProxy = url.parse(request.proxy)
       options = {
         host : parsedProxy.hostname,
         port : parsedProxy.port,
@@ -92,6 +92,14 @@ request.download = function (uri, postData, cb) {
     })
 
     req.on('error', function(e) {
+      if (request.proxy && e.code == 'EPROTO') {
+        var proxyTmp = request.proxy
+        request.proxy = undefined
+        request.download(uri, postData, function (error, uri, data) {
+          request.proxy = proxyTmp
+          cb(error, uri, data)
+        })
+      }
       cb(e.message)
     })
 
@@ -102,7 +110,13 @@ request.download = function (uri, postData, cb) {
 }
 
 module.exports = {
-    init: function (certificate) {
+    init: function (certificate, proxy) {
+
+      if (proxy) {
+        request.proxy = proxy
+      }
+
+      if (!certificate || (!certificate && !certificate.pfxPath)) return this
 
       //folder where pfx will be extracted
       var pfxFolder = __dirname
