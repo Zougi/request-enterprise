@@ -2,12 +2,12 @@ var should = require('chai').should(),
   path = require('path'),
   fs = require('fs'),
   requestpfx = require('../index'),
-  request = requestpfx.download
+  request = requestpfx.init(null, process.env.HTTP_PROXY).download
 
 describe('#check simple get request works', function() {
 
   it('returns body from internal website', function(done) {
-    request("***REMOVED***", function (error, url, body) {
+    request('***REMOVED***', function (error, url, body) {
      if (!error) {
        body.should.exist
      }
@@ -16,8 +16,7 @@ describe('#check simple get request works', function() {
   })
 
   it('returns body from an external website', function(done) {
-    request = requestpfx.init(null, process.env.HTTP_PROXY).download
-    request("http://google.com", function (error, url, body) {
+    request('http://google.com', function (error, url, body) {
       if (!error) {
         body.should.exist
       }
@@ -39,6 +38,25 @@ describe('#check simple get request works', function() {
 // })
 
 
+describe('#check simple get request works with pipes', function() {
+
+  it('returns streamed body from external website', function(done) {
+    var length = 0
+    var stream = request('http://google.com')
+    stream.on('readable', function() {
+      var data = stream.read()
+      if (data && data.length) {
+        length += data.length
+      }
+    })
+    stream.on('end', function () {
+      length.should.exist
+      done()
+    })
+  })
+
+})
+
 describe('#check https get with certificate works', function() {
 
   this.timeout(20000)
@@ -56,7 +74,6 @@ describe('#check https get with certificate works', function() {
 
     setTimeout(function () {
       var stats = fs.statSync(path.join(pfxFolder, 'test.pfx'))
-      console.log(stats.isFile())
       stats.isFile().should.be.true
       done()
     }, 5000);
@@ -64,10 +81,10 @@ describe('#check https get with certificate works', function() {
   })
 
   it('returns body', function(done) {
-    request("***REMOVED***", function (error, url, body) {
-     if (!error) {
-       body.should.exist
-     }
+    request('***REMOVED***', function (error, url, body) {
+      if (!error) {
+        body.should.exist
+      }
       done()
     })
   })
