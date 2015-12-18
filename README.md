@@ -33,6 +33,13 @@ Do a get request:
   })
 ```
 
+Do a get request asynchronously:
+```js
+  //get with streamed response
+  request(uri).pipe(process.stdout)
+```
+
+
 Do a get request with json result:
 ```js
   //simple get

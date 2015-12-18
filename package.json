@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://***REMOVED***/requestpfx.git"
+    "url": "https://github.wdf.sap.corp/i301937/requestpfx.git"
   },
   "keywords": [
     "request",
@@ -17,7 +17,7 @@
     "pfx",
     "certificate"
   ],
-  "author": "***REMOVED***",
+  "author": "i301937",
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.4.0",
