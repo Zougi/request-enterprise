@@ -1,7 +1,7 @@
 /**
  * fetch a url with certificate or proxy and return or stream response
  *
- * Created by I301937 on 19/12/2015.
+ * Created by Zougi on 19/12/2015.
  */
 
 

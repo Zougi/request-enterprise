@@ -15,17 +15,12 @@
  *   }
  * })
  *
- * //post
- * request(uri, { post: 'data' }, function (error, url, body) {
- *   console.log(body)
- * })
+ * //or with pipes
+ * request(uri).pipe(process.stdout)
  *
- * //get with json result parsed and returned as object
- * request(uri, null, 'json', function (error, url, body) {
- *   if (!error) {
- *     console.log(body)
- *   }
- * })
+ * see README.md for more use cases and examples
+ *
+ * Created by Zougi on 26/10/2015.
  *
  */
 
