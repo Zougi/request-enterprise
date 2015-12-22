@@ -1,6 +1,11 @@
 # Request Enterprise
-http(s) wrapper dedicated to enterprise networks
+http(s) wrapper for nodejs, dedicated to enterprise networks
 proxy & sso support
+
+## Installation
+```
+  npm install node-request
+```
 
 ## Description
 Simplify use of get/post requests especially behind a proxy or requiring certificate authentication.
