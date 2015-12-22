@@ -4,7 +4,7 @@ proxy & sso support
 
 ## Installation
 ```
-  npm install node-request
+  npm install request-enterprise
 ```
 
 ## Description
