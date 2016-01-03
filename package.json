@@ -1,6 +1,6 @@
 {
   "name": "request-enterprise",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "http(s) wrapper for enterprise networks",
   "main": "index.js",
   "scripts": {
@@ -25,9 +25,7 @@
     "mocha": "^2.3.3"
   },
   "dependencies": {
-    "clarinet": "^0.11.0",
     "extend": "^3.0.0",
-    "sax": "^1.1.4",
     "streamify": "^0.2.5"
   }
 }

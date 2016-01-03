@@ -114,10 +114,7 @@ module.exports = {
         args[args.length - 1](error, uri, data)
       }
     }
-
-    if (!cb) {
-      stream = streamify()
-    }
+    stream = streamify()
 
     var parsedUrl = url.parse(uri)
     var isHttps = parsedUrl.protocol ? parsedUrl.protocol.indexOf('https') === 0 : true
@@ -136,65 +133,6 @@ module.exports = {
       request.download(uri, opt, cb, stream)
     }
 
-    var parseStream = null
-    if (!cb && opt && opt.ReqParser && opt.ReqParser.key && opt.ReqParser.callback) {
-
-      if (opt.ReqJson) {
-        parseStream = require('clarinet').createStream()
-
-        parseStream.on('error', function (e) {
-          // unhandled errors will throw, since this is a proper node
-          // event emitter.
-          console.error('clarinet error!', e)
-          // clear the error
-          this._parser.error = null
-          this._parser.resume()
-        })
-
-        var key = null
-        parseStream.on('key', function (node) {
-          if (node === opt.ReqParser.key) {
-            key = node
-          }
-        })
-
-        parseStream.on('value', function (node) {
-          if (key && key === opt.ReqParser.key) {
-            opt.ReqParser.callback(node)
-            key = null
-          }
-        })
-      } else {
-        parseStream = require('sax').createStream(false)
-
-        parseStream.on('error', function (e) {
-          // unhandled errors will throw, since this is a proper node
-          // event emitter.
-          console.error('sax error!', e)
-          // clear the error
-          this._parser.error = null
-          this._parser.resume()
-        })
-        var tagIsOpened = false
-        parseStream.on('opentag', function (node) {
-          if (opt.ReqParser.key === node.name) {
-            tagIsOpened = true
-            opt.ReqParser.callback(node)
-          }
-        })
-        parseStream.on('text', function (text) {
-          if (tagIsOpened) {
-            opt.ReqParser.callback(text)
-          }
-        })
-        parseStream.on('closetag', function (node) {
-          if (opt.ReqParser.key === node.name) {
-            tagIsOpened = false
-          }
-        })
-      }
-    }
-
-    return parseStream ? stream.pipe(parseStream): stream
+    return stream
   }
 }
