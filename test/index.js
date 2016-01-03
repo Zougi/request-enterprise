@@ -91,36 +91,4 @@ describe('#check https get with certificate works', function() {
 
 })
 
-describe('#check html parsing works with pipes', function() {
-  it('it emit a node', function(done) {
-    var oneTime = true
-    request('http://google.com', { ReqParser: { key: 'A', callback: function (node) {
-      node.should.exist
-      if (oneTime) {
-        done()
-        oneTime = false
-      }
-    }}})
-  })
-
-})
-
-describe('#check json parsing works with pipes', function() {
-  this.timeout(7000)
-  it('it emit a node', function(done) {
-    var oneTime = true
-    request('http://api.duckduckgo.com/?format=json&t=request-enterprise&q=test',
-      {
-        ReqJson: true,
-        ReqParser: { key: 'FirstURL', callback: function (node) {
-          node.should.exist
-          if (oneTime) {
-            done()
-            oneTime = false
-          }
-        }}
-      }
-    )
-  })
-
 })
