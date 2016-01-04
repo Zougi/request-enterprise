@@ -48,13 +48,17 @@ module.exports = {
 
     //folder where pfx will be extracted
     var pfxFolder = __dirname
-    if (process.env.LOCALAPPDATA) {
-      var tmpDir = path.join(process.env.LOCALAPPDATA, 'Temp')
+
+    //common temporary directories
+    var systemTempDir = process.env.LOCALAPPDATA || process.env.TMPDIR || process.env.TEMP || process.env.TEMP
+    if (systemTempDir) {
+      var tmpDir = path.join(systemTempDir, 'Temp')
       var stats = fs.statSync(tmpDir)
       if (stats.isDirectory()) {
         pfxFolder = tmpDir
       }
     }
+
     var pfxPath = certificate.pfxPath.indexOf('\\') === -1 ?  path.join(pfxFolder, certificate.pfxPath) : certificate.pfxPath
 
     request.pfxPassword = certificate.passphrase
@@ -62,20 +66,37 @@ module.exports = {
     fs.stat(pfxPath, function (err, stat) {
       if (err) {
         try {
-          var args = [
-            path.join(__dirname, 'exportCertificate.ps1'),
-            "-certificateName", certificate.name,
-            "-passphrase", certificate.passphrase,
-            "-exportPath", pfxPath
-          ]
-          //console.log('exec powershell')
-          child_process.spawn("powershell.exe", args)
+          var systemShell = null, args = []
+
+          if (/^win/.test(process.platform)) {
+            systemShell = 'powershell.exe'
+
+            args = [
+              path.join(__dirname, 'exportCertificate.ps1'),
+              "-certificateName", certificate.name,
+              "-passphrase", certificate.passphrase,
+              "-exportPath", pfxPath
+            ]
+          } else {
+            systemShell = '/bin/sh'
+
+            args = [
+              path.join(__dirname, 'exportCertificate.sh'),
+              certificate.name,
+              certificate.passphrase,
+              pfxPath
+            ]
+          }
+
+          child_process.spawn(systemShell, args)
             .on('close', function (error, output) {
               //console.log(error ? 'error generating certificate: '+ error : 'success')
               if (!error) {
                 request.pfxFile = fs.readFileSync(pfxPath)
               }
             })
+
+
         } catch (exception) {
           //console.log(exception)
         }
