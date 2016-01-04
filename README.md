@@ -10,7 +10,7 @@ proxy & sso support
 ## Description
 Simplify use of get/post requests especially behind a proxy or requiring certificate authentication.
 Follow links if there header contains redirection location information
-For https on windows, if certificate name is specified, extract the certificate from user's certificate store and execute the request with the certificate
+For https on windows or mac, if certificate name is specified, extract the certificate from user's certificate store and execute the request with the certificate
 Get the result as a stream or in a callback
 
 This module works great with [sax](https://github.com/isaacs/sax-js) and [oboe](https://github.com/jimhigson/oboe.js)
