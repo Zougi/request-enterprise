@@ -29,6 +29,8 @@ var path = require('path')
 var child_process = require('child_process')
 var url = require('url')
 var querystring = require('querystring')
+var url = require('url')
+var http = require('http')
 
 var streamify = require('streamify')
 
@@ -149,6 +151,12 @@ module.exports = {
         path: parsedUrl.hostname + ':443'
       }).on('connect', function(res, socket) {
         request.download(uri, opt, cb, stream, socket)
+      }).on('error', function(err) {
+        console.log('request-enterprise: ' + err.code + ': ' + err.message + '. try not to specify proxy, request will be faster')
+        if (err.code === 'HPE_INVALID_CONSTANT') {
+          request.proxy = null
+          request.download(uri, opt, cb, stream)
+        }
       }).end()
     } else {
       request.download(uri, opt, cb, stream)
