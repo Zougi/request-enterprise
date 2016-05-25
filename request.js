@@ -69,7 +69,7 @@ request.download = function (uri, opt, cb, stream, socket) {
 
   var req = (isHttps ? https : http)[(opt && opt.ReqPostData) ? 'request' : 'get'](options, function (res) {
     if (res.statusCode < 400 && res.headers.location) {
-      console.log('request-enterprise: Following redirect to ' + res.headers.location)
+      //console.log('request-enterprise: Following redirect to ' + res.headers.location)
       var newUrl = res.headers.location
       if (newUrl.indexOf("/") === 0) {
         newUrl = (isHttps ? 'https://' : 'http://') + options.hostname + newUrl
@@ -91,7 +91,7 @@ request.download = function (uri, opt, cb, stream, socket) {
   })
 
   req.on('error', function(err) {
-    console.log('request-enterprise: ' + err.code + ': ' + err.message)
+    //console.log('request-enterprise: ' + err.code + ': ' + err.message)
     if (request.proxy && !isHttps && err.code === 'EPROTO') {
       var proxyTmp = request.proxy
       request.proxy = undefined
@@ -99,6 +99,8 @@ request.download = function (uri, opt, cb, stream, socket) {
         request.proxy = proxyTmp
         if (cb) cb(error, uri, data)
       }, stream)
+    } else if (!cb) {
+      stream.emit('error', err)
     }
     if (cb) cb(err.message)
   })

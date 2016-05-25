@@ -1,6 +1,6 @@
 {
   "name": "request-enterprise",
-  "version": "2.2.0",
+  "version": "2.2.2",
   "description": "http(s) wrapper for enterprise networks",
   "main": "index.js",
   "scripts": {

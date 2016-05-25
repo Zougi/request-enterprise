@@ -131,7 +131,7 @@ module.exports = {
           try {
             data = JSON.parse(data)
           } catch (e) {
-            console.log(e)
+            stream.emit('error', e)
           }
         }
         args[args.length - 1](error, uri, data)
@@ -152,10 +152,12 @@ module.exports = {
       }).on('connect', function(res, socket) {
         request.download(uri, opt, cb, stream, socket)
       }).on('error', function(err) {
-        console.log('request-enterprise: ' + err.code + ': ' + err.message + '. try not to specify proxy, request will be faster')
+        //console.log('request-enterprise: ' + err.code + ': ' + err.message + '. try not to specify proxy, request will be faster')
         if (err.code === 'HPE_INVALID_CONSTANT') {
           request.proxy = null
           request.download(uri, opt, cb, stream)
+        } else {
+          stream.emit('error', err)
         }
       }).end()
     } else {
