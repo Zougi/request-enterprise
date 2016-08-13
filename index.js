@@ -28,8 +28,6 @@ var fs = require('fs')
 var path = require('path')
 var child_process = require('child_process')
 var url = require('url')
-var querystring = require('querystring')
-var url = require('url')
 var http = require('http')
 
 var streamify = require('streamify')
@@ -116,12 +114,8 @@ module.exports = {
       cb = arguments[1]
     } else {
       opt = arguments[1]
-      if (opt && opt.ReqPostData) {
-        opt.ReqPostData = querystring.stringify(arguments[1])
-      }
       cb = arguments[2]
     }
-
     //rewrite callback if json output
     if (opt && opt.ReqJson && cb) {
       var args = [].concat.apply([], arguments)
