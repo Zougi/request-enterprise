@@ -53,7 +53,7 @@ Do a get request asynchronously:
 Do a post request:
 ```js
   //post
-  request(uri, { ReqPostData: {post: 'data'} }, function (error, url, body) {
+  request(uri, { ReqPostData: JSON.stringify({post: 'data'}) }, function (error, url, body) {
    console.log(body)
   })
 ```
