@@ -83,11 +83,18 @@ request.download = function (uri, opt, cb, stream, socket) {
     } else {
       res.on('data', function (chunk) {
         data += chunk
-      }).on('end', function () {
-        var error = (res.statusCode === 200) ? null : res.statusCode
-        cb(error, uri, data)
       })
     }
+
+    res.on('end', function () {
+      var error = (res.statusCode === 200) ? null : res.statusCode
+      if (cb) {
+        cb(error, uri, data)
+      } else if (error) {
+        stream.emit('error', error)
+        stream.emit('end')
+      }
+    })
   })
 
   req.on('error', function(err) {
