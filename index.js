@@ -52,11 +52,12 @@ module.exports = {
     //common temporary directories
     var systemTempDir = process.env.LOCALAPPDATA || process.env.TMPDIR || process.env.TEMP || process.env.TEMP
     if (systemTempDir) {
-      var tmpDir = path.join(systemTempDir, 'Temp')
-      var stats = fs.statSync(tmpDir)
-      if (stats.isDirectory()) {
-        pfxFolder = tmpDir
-      }
+      try {
+        var stats = fs.statSync(systemTempDir)
+        if (stats.isDirectory()) {
+          pfxFolder = systemTempDir
+        }
+      } catch (err) { }
     }
 
     var pfxPath = certificate.pfxPath.indexOf('\\') === -1 ?  path.join(pfxFolder, certificate.pfxPath) : certificate.pfxPath
